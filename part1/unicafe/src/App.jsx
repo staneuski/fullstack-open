@@ -8,13 +8,15 @@ const Button = ({ handleClick, text }) =>
   <button onClick={handleClick}>{text}</button>
 
 
-const Statistics = ({ text, count }) => <p>{text} {count}</p>
+const Stat = ({ text, value }) => <p>{text} {value}</p>
 
 
 function App() {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+
+  const all = good + neutral + bad
 
   return (
     <>
@@ -24,9 +26,12 @@ function App() {
       <Button handleClick={() => setBad(bad => bad + 1)} text='bad' />
 
       <Header content='statistics' />
-      <Statistics text='good' count={good} />
-      <Statistics text='neutral' count={neutral} />
-      <Statistics text='bad' count={bad} />
+      <Stat text='good' value={good} />
+      <Stat text='neutral' value={neutral} />
+      <Stat text='bad' value={bad} />
+      <Stat text='all' value={all} />
+      <Stat text='average' value={(good - bad) / all} />
+      <Stat text='positive' value={(good / all * 100) + ' %'} />
     </>
   )
 }
