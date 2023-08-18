@@ -1,8 +1,15 @@
 import { useState } from 'react'
 
 
+const Header = ({ content }) => <h1>{content}</h1>
+
+
 const Button = ({ handleClick, text }) =>
   <button onClick={handleClick}>{text}</button>
+
+
+const Anecdote = ({ title, content, votes }) =>
+  <><Header content={title}/><div>{content}</div><div>has {votes} vote(s)</div></>
 
 
 const App = () => {
@@ -19,29 +26,31 @@ const App = () => {
 
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
+  const [maxPoints, setMaxPoints] = useState(0)
 
-  const getRandInd = () => {
-    const index = Math.floor(Math.random() * anecdotes.length)
-    // if (index === selected) {
-    //   getRandInd()
-    // }
-
-    console.log(index, anecdotes[index], points[selected])
-    return index
+  const getRandPos = () => {
+    const pos = Math.floor(Math.random() * anecdotes.length)
+    console.log('getRandPos', pos, anecdotes[pos])
+    return pos
   }
 
   const handleVoteClick = () => {
-    const updated_points = {...points}
-    updated_points[selected]++
-    setPoints(updated_points)
+    const updatedPoints = [ ...points ]
+    updatedPoints[selected]++
+    setPoints(updatedPoints)
+    setMaxPoints(Math.max(...updatedPoints))
   }
 
   return (
     <>
-      <p>{anecdotes[selected]}</p>
-      <p>has {points[selected]} vote(s) </p>
+      <Anecdote title='Anecdote of the day'
+                content={anecdotes[selected]}
+                votes={points[selected]} />
       <Button handleClick={handleVoteClick} text='vote' />
-      <Button handleClick={() => setSelected(() => getRandInd())} text='next anecdote' />
+      <Button handleClick={() => setSelected(() => getRandPos())} text='next anecdote' />
+      <Anecdote title='Anecdote with most votes'
+                content={anecdotes[points.indexOf(maxPoints)]}
+                votes={maxPoints}/>
     </>
   )
 }
