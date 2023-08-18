@@ -13,6 +13,14 @@ const Stat = ({ text, value }) => <p>{text} {value}</p>
 
 const Statistics = ({ good, neutral, bad }) => {
   const all = good + neutral + bad
+  if (all === 0) {
+    return (
+      <>
+        <Header content='statistics' />
+        <p>No feedback given</p>
+      </>
+    )
+  }
 
   return (
     <>
