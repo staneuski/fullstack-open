@@ -18,20 +18,29 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
 
   const getRandInd = () => {
     const index = Math.floor(Math.random() * anecdotes.length)
-    if (index === selected) {
-      getRandInd()
-    }
+    // if (index === selected) {
+    //   getRandInd()
+    // }
 
-    console.log(index, anecdotes[index])
+    console.log(index, anecdotes[index], points[selected])
     return index
+  }
+
+  const handleVoteClick = () => {
+    const updated_points = {...points}
+    updated_points[selected]++
+    setPoints(updated_points)
   }
 
   return (
     <>
       <p>{anecdotes[selected]}</p>
+      <p>has {points[selected]} vote(s) </p>
+      <Button handleClick={handleVoteClick} text='vote' />
       <Button handleClick={() => setSelected(() => getRandInd())} text='next anecdote' />
     </>
   )
