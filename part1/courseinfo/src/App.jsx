@@ -5,22 +5,26 @@ const Header = (props) => {
   )
 }
 
+
+const Part = (props) => {
+  console.log('Part', props)
+  return (
+    <p>{props.name} {props.count}</p>
+  )
+}
+
+
 const Content = (props) => {
   console.log('Content', props)
   return (
     <>
-      <p>
-        {props.part1} {props.exercises1}
-      </p>
-      <p>
-        {props.part2} {props.exercises2}
-      </p>
-      <p>
-        {props.part3} {props.exercises3}
-      </p>
+      <Part name={props.part1} count={props.exercises1}/>
+      <Part name={props.part2} count={props.exercises2}/>
+      <Part name={props.part3} count={props.exercises3}/>
     </>
   )
 }
+
 
 const Total = (props) => {
   console.log('Total', props)
@@ -28,6 +32,7 @@ const Total = (props) => {
     <p>Number of exercises {props.exercise_count}</p>
   )
 }
+
 
 const App = () => {
   const course = 'Half Stack application development'
