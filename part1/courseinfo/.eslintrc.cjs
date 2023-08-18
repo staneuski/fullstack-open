@@ -16,6 +16,7 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    'max-len': ["error", 80],
     'react/prop-types': false,
   },
 }
