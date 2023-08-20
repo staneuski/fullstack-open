@@ -25,7 +25,7 @@ const AddNumber = ({ handleSubmit, handleChange, name }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        name: <input value={name} onChange={handleChange}/>
+        name: <input value={name} onChange={handleChange} />
       </div>
       <div>
         <button type="submit">add</button>
@@ -42,8 +42,14 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
+    const newNameStripped = newName.replace(/\s+/g,' ').trim()
 
-    setPersons(persons.concat({ name: newName }))
+    if (persons.some(({ name }) => name === newNameStripped)) {
+      alert(`${newNameStripped} is already added to phonebook`)
+      return
+    }
+
+    setPersons(persons.concat({ name: newNameStripped }))
     setNewName('')
   }
 
@@ -56,9 +62,9 @@ const App = () => {
     <>
       <h2>Phonebook</h2>
       <AddNumber handleSubmit={addPerson}
-                 handleChange={handleNameChange}
-                 name={newName}/>
-      <Numbers persons={persons}/>
+        handleChange={handleNameChange}
+        name={newName} />
+      <Numbers persons={persons} />
     </>
   )
 }
