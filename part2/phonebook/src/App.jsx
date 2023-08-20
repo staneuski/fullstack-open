@@ -1,7 +1,8 @@
 import { useState } from 'react'
 
-import AddNumber from './components/AddNumber'
-import Numbers from './components/Numbers'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -10,6 +11,8 @@ const App = () => {
     { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
     { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ])
+
+  const [query, setQuery] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
 
@@ -35,14 +38,20 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
-      <AddNumber
+      <Filter
+        handleQueryChange={(event) => setQuery(event.target.value)}
+        query={query}
+      />
+      <h3>Add a new</h3>
+      <PersonForm
         handleSubmit={addPerson}
         handleNameChange={(event) => setNewName(event.target.value)}
         name={newName}
         handleNumberChange={(event) => setNewNumber(event.target.value)}
         number={newNumber}
       />
-      <Numbers persons={persons} />
+      <h3>Numbers</h3>
+      <Persons persons={persons} query={query} />
     </>
   )
 }

@@ -1,4 +1,4 @@
-const AddNumber = ({
+const PersonForm = ({
   handleSubmit,
   handleNameChange, name,
   handleNumberChange, number
@@ -19,4 +19,4 @@ const AddNumber = ({
   )
 }
 
-export default AddNumber
+export default PersonForm
