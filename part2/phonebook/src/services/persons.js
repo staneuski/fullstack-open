@@ -6,7 +6,7 @@ const getAll = () => {
   console.log(request)
   return request
     .then(response => response.data)
-    .catch(error => { console.log('failed: GET') })
+    .catch(error => { console.log(`GET: error=${error}`) })
 }
 
 const create = newObject => {
@@ -14,15 +14,15 @@ const create = newObject => {
   console.log(request)
   return request
     .then(response => response.data)
-    .catch(error => { console.log('failed: POST') })
+    .catch(error => { console.log(`POST: error=${error}`) })
 }
 
-const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
+const deleteOf = id => {
+  const request = axios.delete(`${baseUrl}/${id}`)
   console.log(request)
   return request
     .then(response => response.data)
-    .catch(error => { console.log('failed: PUT') })
+    .catch(error => { console.log(`DELETE: error=${error}`) })
 }
 
-export default { getAll, create, update }
+export default { getAll, create, deleteOf }

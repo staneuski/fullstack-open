@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
@@ -44,6 +43,21 @@ const App = () => {
       })
   }
 
+  const deletePerson = (event, id) => {
+    event.preventDefault()
+    const personObject = persons.find(person => person.id === id)
+    console.log(personObject)
+
+    if (!confirm(`Delete ${personObject.name} ?`))
+      return
+
+    personService
+      .deleteOf(id)
+      .then(() => {
+        setPersons(persons.filter(person => person.id !== id))
+      })
+  }
+
   return (
     <>
       <h2>Phonebook</h2>
@@ -60,7 +74,10 @@ const App = () => {
         number={newNumber}
       />
       <h3>Numbers</h3>
-      <Persons persons={persons} query={query.toLowerCase()} />
+      <Persons 
+        deletePerson={deletePerson}
+        persons={persons} query={query.toLowerCase()}
+      />
     </>
   )
 }
