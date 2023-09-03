@@ -16,7 +16,6 @@ const create = newObject => {
     .then(response => response.data)
     .catch(error => { console.log(`POST: error=${error}`) })
 }
-
 const deleteOf = id => {
   const request = axios.delete(`${baseUrl}/${id}`)
   console.log(request)
@@ -25,4 +24,12 @@ const deleteOf = id => {
     .catch(error => { console.log(`DELETE: error=${error}`) })
 }
 
-export default { getAll, create, deleteOf }
+const update = (id, newObject) => {
+  const request = axios.put(`${baseUrl}/${id}`, newObject)
+  console.log(request)
+  return request
+    .then(response => response.data)
+    .catch(error => { console.log(`PUT: error=${error}`) })
+}
+
+export default { getAll, create, deleteOf, update }

@@ -23,24 +23,38 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    const newNameStripped = newName.replace(/\s+/g, ' ').trim()
-    const newNumberStripped = newNumber.replace(/\s+/g, ' ').trim()
+    const personObject = {
+      name: newName.replace(/\s+/g, ' ').trim(),
+      number: newNumber.replace(/\s+/g, ' ').trim()
+    }
+    const isExist = persons.some(({ name }) => name === personObject.name)
 
-    if (persons.some(({ name }) => name === newNameStripped)) {
-      alert(`${newNameStripped} is already added to phonebook`)
+    if (!isExist) {
+      personService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
       return
     }
 
-    personService
-      .create({
-        name: newNameStripped,
-        number: newNumberStripped
-      })
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')
-      })
+    if (confirm(
+      `${personObject.name} is already added to phonebook replace new number with old one?`
+    )) {
+      const id = persons.find(person => person.name === personObject.name).id
+      personService
+        .update(id, personObject)
+        .then(returnedPerson => {
+          setPersons(
+            persons.map(person => person.id !== id ? person : returnedPerson)
+          )
+          setNewName('')
+          setNewNumber('')
+        })
+      return
+    }
   }
 
   const deletePerson = (event, id) => {
