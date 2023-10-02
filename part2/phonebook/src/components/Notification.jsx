@@ -9,6 +9,7 @@ const Notification = ({ message, style }) => {
     padding: 10,
     ...style
   }
+  // console.log(style)
   // console.log(errorStyle)
 
   if (message === null)

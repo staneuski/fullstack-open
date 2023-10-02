@@ -7,8 +7,6 @@ import Persons from './components/Persons'
 
 import personService from './services/persons'
 
-const TIMEOUT = 5000
-
 const App = () => {
   const [persons, setPersons] = useState([])
 
@@ -35,17 +33,21 @@ const App = () => {
     }
     const isExist = persons.some(({ name }) => name === personObject.name)
 
+    const notify = (message, style = null) => {
+      setErrorStyle(style)
+      setErrorMessage(message)
+      setTimeout(() => {
+        setErrorMessage(null)
+        setErrorStyle(null)
+      }, 5000)
+    }
+
     if (!isExist) {
       personService
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
-          setErrorStyle({ color: 'green' })
-          setErrorMessage(`Added ${returnedPerson.name}`)
-          setTimeout(() => {
-            setErrorMessage(null)
-            setErrorStyle(null)
-          }, TIMEOUT)
+          notify(`Added ${returnedPerson.name}`, { color: 'green' })
           setNewName('')
           setNewNumber('')
         })
@@ -62,14 +64,13 @@ const App = () => {
           setPersons(
             persons.map(person => person.id !== id ? person : returnedPerson)
           )
-          setErrorStyle({ color: 'orange' })
-          setErrorMessage(`Edited ${returnedPerson.name}`)
-          setTimeout(() => {
-            setErrorMessage(null)
-            setErrorStyle(null)
-          }, TIMEOUT)
+          notify(`Edited ${returnedPerson.name}`, { color: 'orange' })
           setNewName('')
           setNewNumber('')
+        })
+        .catch(error => {
+          notify(`Info of ${personObject.name} has already removed from server`)
+          setPersons(persons.filter(person => person.id !== id))
         })
       return
     }

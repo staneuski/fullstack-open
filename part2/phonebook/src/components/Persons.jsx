@@ -1,5 +1,3 @@
-import personService from '../services/persons'
-
 const Person = ({ handleDelete, name, number }) => {
   // console.log(name, number)
   return (
