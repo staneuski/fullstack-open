@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react'
 
 import Filter from './components/Filter'
+import Notification from './components/Notification'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 
 import personService from './services/persons'
+
+const TIMEOUT = 5000
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -12,12 +15,15 @@ const App = () => {
   const [query, setQuery] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [errorStyle, setErrorStyle] = useState(null)
+  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
     personService
       .getAll()
       .then(initialPersons => {
         setPersons(initialPersons)
+        setErrorMessage(null)
       })
   }, [])
 
@@ -34,6 +40,12 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          setErrorStyle({ color: 'green' })
+          setErrorMessage(`Added ${returnedPerson.name}`)
+          setTimeout(() => {
+            setErrorMessage(null)
+            setErrorStyle(null)
+          }, TIMEOUT)
           setNewName('')
           setNewNumber('')
         })
@@ -50,6 +62,12 @@ const App = () => {
           setPersons(
             persons.map(person => person.id !== id ? person : returnedPerson)
           )
+          setErrorStyle({ color: 'orange' })
+          setErrorMessage(`Edited ${returnedPerson.name}`)
+          setTimeout(() => {
+            setErrorMessage(null)
+            setErrorStyle(null)
+          }, TIMEOUT)
           setNewName('')
           setNewNumber('')
         })
@@ -75,6 +93,7 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} style={errorStyle} />
       <Filter
         handleQueryChange={(event) => setQuery(event.target.value)}
         query={query}
