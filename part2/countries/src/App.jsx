@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react' 
 
 import Countries from './components/Countries'
 import Filter from './components/Filter'
@@ -6,16 +6,12 @@ import Filter from './components/Filter'
 import countryService from './services/countries'
 
 function App() {
-  const [countries, setCountries] = useState([])
-  const [query, setQuery] = useState('')
-  useEffect(() => {
+  const [countries, setCountries] = useState(() => {
     countryService
       .getAll()
-      .then(allCountries => {
-        setCountries(allCountries)
-        // console.log(countries)
-      })
-    }, [])
+      .then(allCountries => setCountries(allCountries))
+  })
+  const [query, setQuery] = useState('')
 
   const [info, setInfo] = useState(null)
   const updateInfo = (event, officialName) => {
