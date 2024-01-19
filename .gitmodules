@@ -7,3 +7,9 @@
 [submodule "part4/bloglist-backend"]
 	path = part4/bloglist-backend
 	url = git@github.com:staneuski/bloglist-backend.git
+[submodule "part5/bloglist/backend"]
+	path = part5/bloglist/backend
+	url = git@github.com:staneuski/bloglist-backend.git
+[submodule "part5/bloglist/frontend"]
+	path = part5/bloglist/frontend
+	url = git@github.com:staneuski/bloglist-frontend.git
