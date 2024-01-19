@@ -1,0 +1,6 @@
+[submodule "part3/phonebook/frontend"]
+	path = part3/phonebook/frontend
+	url = git@github.com:staneuski/phonebook-frontend.git
+[submodule "part3/phonebook/backend"]
+	path = part3/phonebook/backend
+	url = git@github.com:staneuski/phonebook-backend.git
