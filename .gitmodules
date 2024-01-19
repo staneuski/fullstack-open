@@ -4,12 +4,26 @@
 [submodule "part3/phonebook/backend"]
 	path = part3/phonebook/backend
 	url = git@github.com:staneuski/phonebook-backend.git
+
 [submodule "part4/bloglist-backend"]
 	path = part4/bloglist-backend
 	url = git@github.com:staneuski/bloglist-backend.git
+
 [submodule "part5/bloglist/backend"]
 	path = part5/bloglist/backend
 	url = git@github.com:staneuski/bloglist-backend.git
 [submodule "part5/bloglist/frontend"]
 	path = part5/bloglist/frontend
 	url = git@github.com:staneuski/bloglist-frontend.git
+
+[submodule "part6/unicafe-frontend"]
+	path = part6/unicafe-frontend
+	url = git@github.com:staneuski/unicafe-frontend.git
+[submodule "part6/anecdotes-redux"]
+	path = part6/anecdotes-redux
+	url = git@github.com:staneuski/anecdotes-frontend.git
+	branch = redux/main
+[submodule "part6/anecdotes-query"]
+	path = part6/anecdotes-query
+	url = git@github.com:staneuski/anecdotes-frontend.git
+	branch = query/main
