@@ -27,3 +27,8 @@
 	path = part6/anecdotes-query
 	url = git@github.com:staneuski/anecdotes-frontend.git
 	branch = query/main
+
+[submodule "part7/routed-anecdotes"]
+	path = part7/routed-anecdotes
+	url = git@github.com:staneuski/anecdotes-frontend.git
+	branch = routed/main
