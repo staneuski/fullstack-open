@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import countryService from '../services/countries'
+
 export const useField = (type) => {
   const [value, setValue] = useState('')
 
@@ -11,10 +13,22 @@ export const useField = (type) => {
 }
 
 export const useCountry = (name) => {
-  // eslint-disable-next-line no-unused-vars
   const [country, setCountry] = useState(null)
 
-  useEffect(() => {})
+  useEffect(() => {
+    const search = async (name) => {
+      try {
+        const countryInfo = await countryService.getOne(name)
+        setCountry({ found: true, data: countryInfo })
+      } catch (exception) {
+        console.log(exception.response.data.error)
+        setCountry({ found: false })
+      }
+    }
+
+    if (name)
+      search(name)
+  }, [name])
 
   return country
 }

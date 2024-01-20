@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import axios from 'axios' // eslint-disable-line no-unused-vars
 
 import { useCountry, useField } from './hooks'
 import Country from './components/Country'
