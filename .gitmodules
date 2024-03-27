@@ -32,3 +32,11 @@
 	path = part7/routed-anecdotes
 	url = git@github.com:staneuski/anecdotes-frontend.git
 	branch = routed/main
+[submodule "part7/bloglist-redux"]
+	path = part7/bloglist-redux
+	url = git@github.com:staneuski/bloglist-frontend.git
+	branch = redux/main
+[submodule "part7/bloglist-query"]
+	path = part7/bloglist-query
+	url = git@github.com:staneuski/bloglist-frontend.git
+	branch = query/main
