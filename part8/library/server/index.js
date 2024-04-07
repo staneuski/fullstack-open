@@ -1,21 +1,22 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
+const { v1: uuid } = require('uuid')
 
 let authors = [
   {
+    born: 1952,
     name: 'Robert Martin',
-    id: 'afa51ab0-344d-11e9-a414-719c6709cf3e',
-    born: 1952
+    id: 'afa51ab0-344d-11e9-a414-719c6709cf3e'
   },
   {
+    born: 1963,
     name: 'Martin Fowler',
-    id: 'afa5b6f0-344d-11e9-a414-719c6709cf3e',
-    born: 1963
+    id: 'afa5b6f0-344d-11e9-a414-719c6709cf3e'
   },
   {
+    born: 1821,
     name: 'Fyodor Dostoevsky',
-    id: 'afa5b6f1-344d-11e9-a414-719c6709cf3e',
-    born: 1821
+    id: 'afa5b6f1-344d-11e9-a414-719c6709cf3e'
   },
   {
     name: 'Joshua Kerievsky', // birthyear not known
@@ -35,53 +36,53 @@ let authors = [
  */
 let books = [
   {
+    author: 'Robert Martin',
+    genres: ['refactoring'],
+    published: 2008,
     title: 'Clean Code',
-    published: 2008,
-    author: 'Robert Martin',
-    id: 'afa5b6f4-344d-11e9-a414-719c6709cf3e',
-    genres: ['refactoring']
+    id: 'afa5b6f4-344d-11e9-a414-719c6709cf3e'
   },
   {
-    title: 'Agile software development',
+    author: 'Robert Martin',
+    genres: ['agile', 'patterns', 'design'],
     published: 2002,
-    author: 'Robert Martin',
-    id: 'afa5b6f5-344d-11e9-a414-719c6709cf3e',
-    genres: ['agile', 'patterns', 'design']
+    title: 'Agile software development',
+    id: 'afa5b6f5-344d-11e9-a414-719c6709cf3e'
   },
   {
-    title: 'Refactoring, edition 2',
-    published: 2018,
     author: 'Martin Fowler',
-    id: 'afa5de00-344d-11e9-a414-719c6709cf3e',
-    genres: ['refactoring']
+    genres: ['refactoring'],
+    published: 2018,
+    title: 'Refactoring, edition 2',
+    id: 'afa5de00-344d-11e9-a414-719c6709cf3e'
   },
   {
-    title: 'Refactoring to patterns',
-    published: 2008,
     author: 'Joshua Kerievsky',
-    id: 'afa5de01-344d-11e9-a414-719c6709cf3e',
-    genres: ['refactoring', 'patterns']
+    genres: ['refactoring', 'patterns'],
+    published: 2008,
+    title: 'Refactoring to patterns',
+    id: 'afa5de01-344d-11e9-a414-719c6709cf3e'
   },
   {
-    title: 'Practical Object-Oriented Design, An Agile Primer Using Ruby',
-    published: 2012,
     author: 'Sandi Metz',
-    id: 'afa5de02-344d-11e9-a414-719c6709cf3e',
-    genres: ['refactoring', 'design']
+    genres: ['refactoring', 'design'],
+    published: 2012,
+    title: 'Practical Object-Oriented Design, An Agile Primer Using Ruby',
+    id: 'afa5de02-344d-11e9-a414-719c6709cf3e'
   },
   {
-    title: 'Crime and punishment',
+    author: 'Fyodor Dostoevsky',
+    genres: ['classic', 'crime'],
     published: 1866,
-    author: 'Fyodor Dostoevsky',
-    id: 'afa5de03-344d-11e9-a414-719c6709cf3e',
-    genres: ['classic', 'crime']
+    title: 'Crime and punishment',
+    id: 'afa5de03-344d-11e9-a414-719c6709cf3e'
   },
   {
-    title: 'The Demon ',
-    published: 1872,
     author: 'Fyodor Dostoevsky',
-    id: 'afa5de04-344d-11e9-a414-719c6709cf3e',
-    genres: ['classic', 'revolution']
+    genres: ['classic', 'revolution'],
+    published: 1872,
+    title: 'The Demon',
+    id: 'afa5de04-344d-11e9-a414-719c6709cf3e'
   }
 ]
 
@@ -103,18 +104,24 @@ const typeDefs = `
 
   type Query {
     allAuthors: [Author!]!
-    authorCount: Int!
-
     allBooks(author: String, genre: String): [Book!]!
+    authorCount: Int!
     bookCount: Int!
+  }
+
+  type Mutation {
+    addBook(
+      author: String!
+      genres: [String!]!
+      published: Int!
+      title: String!
+    ): Book
   }
 `
 
 const resolvers = {
   Query: {
     allAuthors: () => authors,
-    authorCount: () => authors.length,
-
     allBooks: (root, args) => {
       if (args.author && args.genre)
         return books.filter(
@@ -128,11 +135,26 @@ const resolvers = {
 
       return books
     },
+    authorCount: () => authors.length,
     bookCount: () => books.length
   },
   Author: {
     bookCount: (root) =>
       books.filter((book) => book.author === root.name).length
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      if (!authors.find((author) => author.name === args.author)) {
+        authors = authors.concat({
+          id: uuid(),
+          name: args.author
+        })
+      }
+
+      const book = { ...args, id: uuid() }
+      books = books.concat(book)
+      return book
+    }
   }
 }
 
