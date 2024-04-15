@@ -2,7 +2,9 @@ import { useQuery } from '@apollo/client'
 
 import { ALL_AUTHORS } from '../queries'
 
-const Authors = () => {
+import AuthorEdit from './AuthorEdit'
+
+const Authors = ({ setNotification }) => {
   const result = useQuery(ALL_AUTHORS)
   if (result.loading) {
     return <div>loading...</div>
@@ -28,6 +30,10 @@ const Authors = () => {
           ))}
         </tbody>
       </table>
+      <AuthorEdit
+        names={authors.map((author) => author.name)}
+        setNotification={setNotification}
+      />
     </div>
   )
 }

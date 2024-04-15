@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/client'
 import { ALL_AUTHORS, ALL_BOOKS, ADD_BOOK } from '../queries'
 import { useField } from '../hooks'
 
-const NewBook = () => {
+const NewBook = ({ setNotification }) => {
   const [author, resetAuthor] = useField('text', 'author')
   const [genre, resetGenre] = useField('text', 'genre')
   const [published, resetPublished] = useField('number', 'published')
@@ -12,7 +12,11 @@ const NewBook = () => {
   const [genres, setGenres] = useState([])
 
   const [addBook] = useMutation(ADD_BOOK, {
-    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }]
+    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
+    onError: (error) => {
+      const messages = error.graphQLErrors.map((e) => e.message).join('\n')
+      setNotification(messages)
+    }
   })
 
   const submit = async (event) => {
@@ -27,6 +31,7 @@ const NewBook = () => {
       }
     })
 
+    setNotification(`${title.value} created`)
     resetAuthor()
     resetGenre()
     resetPublished()

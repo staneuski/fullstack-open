@@ -4,12 +4,16 @@ import { ALL_AUTHORS, EDIT_AUTHOR } from '../queries'
 
 import { useField } from '../hooks'
 
-const AuthorEdit = () => {
+const AuthorEdit = ({ names, setNotification }) => {
   const [author, resetAuthor] = useField('text', 'author')
   const [born, resetBorn] = useField('number', 'born')
 
   const [editAuthor] = useMutation(EDIT_AUTHOR, {
-    refetchQueries: [{ query: ALL_AUTHORS }]
+    refetchQueries: [{ query: ALL_AUTHORS }],
+    onError: (error) => {
+      const messages = error.graphQLErrors.map((e) => e.message).join('\n')
+      setNotification(messages)
+    }
   })
 
   const submit = async (event) => {
@@ -19,6 +23,7 @@ const AuthorEdit = () => {
       variables: { name: author.value, setBornTo: parseInt(born.value) }
     })
 
+    setNotification(`Birth year updated for ${author.value}`)
     resetAuthor()
     resetBorn()
   }
@@ -27,10 +32,13 @@ const AuthorEdit = () => {
     <>
       <h2>Set birthyear</h2>
       <form onSubmit={submit}>
-        <div>
-          name
-          <input {...author} />
-        </div>
+        <select {...author}>
+          {names.map((name, i) => (
+            <option key={i} value={name}>
+              {name}
+            </option>
+          ))}
+        </select>
         <div>
           year
           <input {...born} />
