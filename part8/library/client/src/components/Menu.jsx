@@ -11,7 +11,7 @@ const Menu = () => {
         books
       </Link>
       <Link to="/add" style={padding}>
-        add new book
+        add book
       </Link>
     </div>
   )
