@@ -1,4 +1,5 @@
 const { ApolloServer } = require('@apollo/server')
+const { GraphQLError } = require('graphql')
 const { startStandaloneServer } = require('@apollo/server/standalone')
 
 const mongoose = require('mongoose')
@@ -58,6 +59,12 @@ const resolvers = {
       const filter = []
       if (author) {
         const authorObject = await Author.findOne({ name: author })
+        if (!authorObject)
+          throw new GraphQLError(`author='${author}' not found`, {
+            extensions: {
+              code: 'BAD_USER_INPUT'
+            }
+          })
         filter.push({ author: { $in: authorObject.id } })
       }
       if (genre) {
@@ -107,13 +114,21 @@ const resolvers = {
       return book
     },
     editAuthor: async (root, { name, setBornTo }) => {
-      return (await Author.findOne({ name: name }))
-        ? await Author.findOneAndUpdate(
-            { name: name },
-            { born: setBornTo },
-            { new: true }
-          )
-        : null
+      try {
+        return await Author.findOneAndUpdate(
+          { name: name },
+          { born: setBornTo },
+          { new: true }
+        )
+      } catch (error) {
+        throw new GraphQLError('Editing author failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: { name, setBornTo },
+            error
+          }
+        })
+      }
     }
   }
 }
