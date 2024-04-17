@@ -1,4 +1,20 @@
 mutation {
+  login (
+    username: "librarian"
+    password: "secret"
+  ) {
+    value
+  }
+}
+
+query {
+  me {
+    id
+    username
+  }
+}
+
+mutation {
   addBook(
     author: "Robert Martin",
     genres: ["refactoring"],
