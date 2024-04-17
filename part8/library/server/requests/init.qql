@@ -1,0 +1,70 @@
+mutation {
+  addBook(
+    author: "Robert Martin",
+    genres: ["refactoring"],
+    published: 2008,
+    title: "Clean Code"
+  ) {
+    title
+  }
+}
+mutation {
+  addBook(
+    author: "Robert Martin",
+    genres: ["agile", "patterns", "design"],
+    published: 2002,
+    title: "Agile software development"
+  ) {
+    title
+  }
+}
+mutation {
+  addBook(
+    author: "Martin Fowler",
+    genres: ["refactoring"],
+    published: 2018,
+    title: "Refactoring, edition 2"
+  ) {
+    title
+  }
+}
+mutation {
+  addBook(
+    author: "Joshua Kerievsky",
+    genres: ["refactoring", "patterns"],
+    published: 2008,
+    title: "Refactoring to patterns"
+  ) {
+    title
+  }
+}
+mutation {
+  addBook(
+    author: "Sandi Metz",
+    genres: ["refactoring", "design"],
+    published: 2012,
+    title: "Practical Object-Oriented Design, An Agile Primer Using Ruby"
+  ) {
+    title
+  }
+}
+mutation {
+  addBook(
+    author: "Fyodor Dostoevsky",
+    genres: ["classic", "crime"],
+    published: 1866,
+    title: "Crime and punishment"
+  ) {
+    title
+  }
+}
+mutation {
+  addBook(
+    author: "Fyodor Dostoevsky",
+    genres: ["classic", "revolution"],
+    published: 1872,
+    title: "The Demon"
+  ) {
+    title
+  }
+}
