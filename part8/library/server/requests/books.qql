@@ -1,0 +1,36 @@
+query {
+  allBooks {
+    title,
+    author {
+      name,
+      born
+    }
+  }
+}
+query {
+  allBooks(author: "Robert Martin") {
+    title,
+    author {
+      name,
+      born
+    }
+  }
+}
+query {
+  allBooks(author: "Robert Martin", genre: "patterns") {
+    title,
+    author {
+      name,
+      born
+    }
+  }
+}
+query {
+  allBooks(author: "Robert_Martin") {
+    title,
+    author {
+      name,
+      born
+    }
+  }
+}

@@ -54,26 +54,26 @@ const typeDefs = `
 const resolvers = {
   Query: {
     allAuthors: async () => Author.find({}),
-    /*allBooks: (root, args) => {
-      if (args.author && args.genre)
-        return books.filter(
-          (book) =>
-            book.author === args.author && book.genres.includes(args.genre)
-        )
-      if (args.author)
-        return books.filter((book) => book.author === args.author)
-      if (args.genre)
-        return books.filter((book) => book.genres.includes(args.genre))
-
-      return books
-    },*/
+    allBooks: async (root, { author, genre }) => {
+      const filter = []
+      if (author) {
+        const authorObject = await Author.findOne({ name: author })
+        filter.push({ author: { $in: authorObject.id } })
+      }
+      if (genre) {
+        filter.push({ genres: { $in: genre } })
+      }
+      return await Book.find(filter.length ? { $and: filter } : {}).populate(
+        'author'
+      )
+    },
     authorCount: async () => Author.collection.countDocuments(),
     bookCount: async () => Book.collection.countDocuments()
   },
-  /*Author: {
-    bookCount: (root) =>
-      books.filter((book) => book.author === root.name).length
-  },*/
+  Author: {
+    bookCount: async (root) =>
+      await Book.find({ author: root.id }).countDocuments()
+  },
   Mutation: {
     addBook: async (root, args) => {
       let author = await Author.findOne({ name: args.author })
@@ -105,18 +105,16 @@ const resolvers = {
         })
       }
       return book
+    },
+    editAuthor: async (root, { name, setBornTo }) => {
+      return (await Author.findOne({ name: name }))
+        ? await Author.findOneAndUpdate(
+            { name: name },
+            { born: setBornTo },
+            { new: true }
+          )
+        : null
     }
-    /*
-    editAuthor: (root, args) => {
-      const author = authors.find((p) => p.name === args.name)
-      if (!author) return null
-
-      const updatedAuthor = { ...author, born: args.setBornTo }
-      authors = authors.map((author) =>
-        author.name === args.name ? updatedAuthor : author
-      )
-      return updatedAuthor
-    }*/
   }
 }
 

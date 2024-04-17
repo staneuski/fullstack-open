@@ -68,3 +68,22 @@ mutation {
     title
   }
 }
+
+mutation {
+  editAuthor(name: "Robert Martin", setBornTo: 1952) {
+    name
+    born
+  }
+}
+mutation {
+  editAuthor(name: "Martin Fowler", setBornTo: 1963) {
+    name
+    born
+  }
+}
+mutation {
+  editAuthor(name: "Fyodor Dostoevsky", setBornTo: 1821) {
+    name
+    born
+  }
+}
