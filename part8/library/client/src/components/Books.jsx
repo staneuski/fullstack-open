@@ -9,7 +9,6 @@ const Books = () => {
   }
 
   const books = result.data.allBooks
-  console.log(books)
   return (
     <div>
       <h2>books</h2>

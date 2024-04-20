@@ -16,6 +16,7 @@ const NewBook = ({ setNotification }) => {
     onError: (error) => {
       const messages = error.graphQLErrors.map((e) => e.message).join('\n')
       setNotification(messages)
+      console.log(messages)
     }
   })
 
