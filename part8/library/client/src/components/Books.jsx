@@ -9,6 +9,7 @@ const Books = () => {
   }
 
   const books = result.data.allBooks
+  console.log(books)
   return (
     <div>
       <h2>books</h2>
@@ -23,7 +24,7 @@ const Books = () => {
           {books.map((book) => (
             <tr key={book.title}>
               <td>{book.title}</td>
-              <td>{book.author}</td>
+              <td>{book.author.name}</td>
               <td>{book.published}</td>
             </tr>
           ))}
