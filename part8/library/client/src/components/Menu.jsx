@@ -11,17 +11,20 @@ const Menu = ({ token, logout }) => {
         books
       </Link>
       <>
-        {!token ? (
-          <Link to="/login" style={padding}>
-            login
-          </Link>
-        ) : (
+        {token ? (
           <>
+            <Link to="/recommend" style={padding}>
+              recommend
+            </Link>
             <Link to="/add" style={padding}>
               add book
             </Link>
             <button onClick={logout}>logout</button>
           </>
+        ) : (
+          <Link to="/login" style={padding}>
+            login
+          </Link>
         )}
       </>
     </div>

@@ -61,7 +61,7 @@ const typeDefs = `
       published: Int!
       title: String!
     ): Book!
-    createUser(username: String!): User
+    createUser(username: String!, favoriteGenre: String!): User
     editAuthor(name: String!, setBornTo: Int!): Author
     login(username: String!, password: String!): Token 
   }
@@ -165,7 +165,7 @@ const resolvers = {
       }
     },
     createUser: async (root, args) => {
-      const user = new User({ username: args.username })
+      const user = new User(args)
       return user.save().catch((error) => {
         throw new GraphQLError('creating the user failed', {
           extensions: {

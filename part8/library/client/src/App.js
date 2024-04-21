@@ -8,6 +8,7 @@ import Menu from './components/Menu'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
+import Recommendations from './components/Recommendations'
 
 const App = () => {
   const client = useApolloClient()
@@ -36,15 +37,10 @@ const App = () => {
         <Route path="/authors" element={<Authors setNotification={notify} />} />
         <Route path="/books" element={<Books />} />
         <Route path="/add" element={<NewBook setNotification={notify} />} />
+        <Route path="/recommend" element={<Recommendations />} />
         <Route
           path="/login"
-          element={
-            !token ? (
-              <LoginForm setNotification={notify} setToken={setToken} />
-            ) : (
-              <></>
-            )
-          }
+          element={<LoginForm setNotification={notify} setToken={setToken} />}
         />
       </Routes>
     </div>
