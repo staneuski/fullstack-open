@@ -14,6 +14,14 @@ query {
   }
 }
 
+subscription Subscription {
+  bookAdded {
+    author {
+      name
+    }
+  }
+}
+
 mutation {
   addBook(
     author: "Robert Martin",
