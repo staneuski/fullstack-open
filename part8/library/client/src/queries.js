@@ -40,6 +40,15 @@ export const ADD_BOOK = gql`
   }
   ${BOOK_DETAILS}
 `
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      ...BookDetails
+    }
+  }
+  ${BOOK_DETAILS}
+`
 //: }}}
 
 //: Author {{{

@@ -11,7 +11,7 @@ const Books = () => {
   }
 
   const books = result.data.allBooks
-  const genres = new Set(books.flatMap((book) => book.genres))
+  const genres = new Set(books.flatMap((book) => book.genres).sort())
   return (
     <div>
       <h2>books</h2>
