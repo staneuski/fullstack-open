@@ -113,6 +113,19 @@ mutation {
     }
   }
 }
+mutation {
+  addBook(
+    author: "W.G. Sebald",
+    genres: ["historical novel"],
+    published: 2001,
+    title: "Austerlitz"
+  ) {
+    title
+    author {
+      name
+    }
+  }
+}
 
 mutation {
   editAuthor(name: "Robert Martin", setBornTo: 1952) {

@@ -12,7 +12,12 @@ const pubsub = new PubSub()
 
 const resolvers = {
   Query: {
-    allAuthors: async () => Author.find({}),
+    //: Author {{{
+    allAuthors: async () => Author.find({}).populate('books'),
+    authorCount: async () => Author.collection.countDocuments(),
+    //: }}}
+
+    //: Book {{{
     allBooks: async (root, { author, genre }) => {
       const filter = []
       if (author) {
@@ -32,58 +37,20 @@ const resolvers = {
         'author'
       )
     },
-    authorCount: async () => Author.collection.countDocuments(),
     bookCount: async () => Book.collection.countDocuments(),
+    //: }}}
+
+    //: User {{{
     me: (root, args, { currentUser }) => {
       return currentUser
     }
+    //: }}}
   },
   Author: {
-    bookCount: async (root) =>
-      await Book.find({ author: root.id }).countDocuments()
+    bookCount: async (root) => root.books.length
   },
   Mutation: {
-    addBook: async (root, args, { currentUser }) => {
-      if (!currentUser) {
-        throw new GraphQLError('not authenticated', {
-          extensions: {
-            code: 'BAD_USER_INPUT'
-          }
-        })
-      }
-
-      let author = await Author.findOne({ name: args.author })
-      if (!author) {
-        author = new Author({ name: args.author })
-        try {
-          await author.save()
-        } catch (error) {
-          throw new GraphQLError('saving author failed', {
-            extensions: {
-              code: 'BAD_USER_INPUT',
-              invalidArgs: args.author,
-              error
-            }
-          })
-        }
-      }
-
-      const book = new Book({ ...args, author })
-      try {
-        await book.save()
-      } catch (error) {
-        throw new GraphQLError('saving book failed', {
-          extensions: {
-            code: 'BAD_USER_INPUT',
-            invalidArgs: args.title,
-            error
-          }
-        })
-      }
-
-      pubsub.publish('BOOK_ADDED', { bookAdded: book })
-      return book
-    },
+    //: Author {{{
     editAuthor: async (root, { name, setBornTo }, { currentUser }) => {
       if (!currentUser) {
         throw new GraphQLError('not authenticated', {
@@ -109,6 +76,54 @@ const resolvers = {
         })
       }
     },
+    //: }}}
+
+    //: Book {{{
+    addBook: async (root, args, { currentUser }) => {
+      if (!currentUser) {
+        throw new GraphQLError('not authenticated', {
+          extensions: {
+            code: 'BAD_USER_INPUT'
+          }
+        })
+      }
+
+      let author = await Author.findOne({ name: args.author })
+      if (!author) {
+        author = new Author({ name: args.author })
+      }
+
+      const book = new Book({ ...args, author })
+      try {
+        author.books.push(book._id)
+        await author.save()
+      } catch (error) {
+        throw new GraphQLError('saving author failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.author,
+            error
+          }
+        })
+      }
+      try {
+        await book.save()
+      } catch (error) {
+        throw new GraphQLError('saving book failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.title,
+            error
+          }
+        })
+      }
+
+      pubsub.publish('BOOK_ADDED', { bookAdded: book })
+      return book
+    },
+    //: }}}
+
+    //: User {{{
     createUser: async (root, args) => {
       const user = new User(args)
       return user.save().catch((error) => {
@@ -132,6 +147,7 @@ const resolvers = {
       const userForToken = { username: user.username, id: user._id }
       return { value: jwt.sign(userForToken, config.SECRET) }
     }
+    //: }}}
   },
   Subscription: {
     bookAdded: {

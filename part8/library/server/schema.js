@@ -25,10 +25,12 @@ const typeDefs = `
   }
 
   type Query {
-    allAuthors: [Author!]!
-    allBooks(author: String, genre: String): [Book!]!
     authorCount: Int!
+    allAuthors: [Author!]!
+
+    allBooks(author: String, genre: String): [Book!]!
     bookCount: Int!
+
     me: User
   }
 
