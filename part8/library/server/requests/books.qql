@@ -27,6 +27,15 @@ query {
   }
 }
 query {
+  allBooks(genre: "patterns") {
+    title,
+    author {
+      name,
+      born
+    }
+  }
+}
+query {
   allBooks(author: "Robert_Martin") {
     title,
     author {
