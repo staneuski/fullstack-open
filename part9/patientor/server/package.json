@@ -2,10 +2,10 @@
   "name": "patientor",
   "version": "9.13.0",
   "scripts": {
-    "tsc": "tsc",
     "dev": "ts-node-dev src/index.ts",
     "lint": "eslint --ext .ts .",
-    "start": "node build/index.js"
+    "build": "tsc",
+    "start": "node build/src/index.js"
   },
   "engines": {
     "node": ">=22.3.0 <23.0.0"
