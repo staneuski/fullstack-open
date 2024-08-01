@@ -1,5 +1,6 @@
-import { NewPatient } from './types';
+import { Gender, NewPatient } from './types';
 
+//: String {{{
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
 };
@@ -9,7 +10,9 @@ const parseString = (text: unknown): string => {
   }
   return text;
 };
+//: }}}
 
+//: Date {{{
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
 };
@@ -19,7 +22,23 @@ const parseDate = (date: unknown): string => {
   }
   return date;
 };
+//: }}}
 
+//: Gender {{{
+const isGender = (param: string): param is Gender => {
+  return Object.values(Gender)
+    .map((v) => v.toString())
+    .includes(param);
+};
+const parseGender = (gender: unknown): Gender => {
+  if (!isString(gender) || !isGender(gender)) {
+    throw new Error('Incorrect gender: ' + gender);
+  }
+  return gender;
+};
+//: }}}
+
+//: Patient {{{
 const toNewPatient = (object: unknown): NewPatient => {
   if (!object || typeof object !== 'object') {
     throw new Error('Incorrect or missing data');
@@ -36,7 +55,7 @@ const toNewPatient = (object: unknown): NewPatient => {
       name: parseString(object.name),
       dateOfBirth: parseDate(object.dateOfBirth),
       ssn: parseString(object.ssn),
-      gender: parseString(object.gender),
+      gender: parseGender(object.gender),
       occupation: parseString(object.occupation),
     };
     return patient;
@@ -44,5 +63,6 @@ const toNewPatient = (object: unknown): NewPatient => {
 
   throw new Error('Incorrect data: a field missing');
 };
+//: }}}
 
 export default toNewPatient;
