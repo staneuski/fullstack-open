@@ -1,8 +1,8 @@
 import { Diagnose } from '../types';
 import diagnoses from '../../resources/diagnoses';
 
-const getEntries = (): Diagnose[] => {
+const getAll = (): Diagnose[] => {
   return diagnoses;
 };
 
-export default { getEntries };
+export default { getAll };

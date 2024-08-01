@@ -1,9 +1,12 @@
+//: Diagnose {{{
 export interface Diagnose {
   code: string;
   name: string;
   latin?: string;
 }
+//: }}}
 
+//: Patient {{{
 export interface Patient {
   id: string;
   name: string;
@@ -12,4 +15,6 @@ export interface Patient {
   gender: string;
   occupation: string;
 }
+export type NewPatient = Omit<Patient, 'id'>;
 export type NonSensitivePatient = Omit<Patient, 'ssn'>;
+//: }}}
