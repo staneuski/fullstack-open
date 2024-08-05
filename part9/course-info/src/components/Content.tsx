@@ -1,11 +1,11 @@
 import { CoursePart } from "../types";
 
+import Part from "./Part";
+
 const Content = ({ parts }: { parts: CoursePart[] }) => (
   <>
-    {parts.map(({ name, exerciseCount }) => (
-      <p key={name}>
-        {name} {exerciseCount}
-      </p>
+    {parts.map((part) => (
+      <Part key={part.name} part={part} />
     ))}
   </>
 );
