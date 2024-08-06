@@ -7,10 +7,11 @@ import diaryService from "./services/diaries";
 
 import DiariesForm from "./components/DiaryForm";
 import DiariesList from "./components/DiaryList";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [diaries, setDiaries] = useState<Diary[]>([]);
-  const [, setError] = useState<string>();
+  const [error, setError] = useState<string>();
 
   useEffect(() => {
     const fetchDiaryList = async () => {
@@ -45,6 +46,7 @@ const App = () => {
 
   return (
     <>
+      {error && <Notification message={error} />}
       <DiariesForm onSubmit={submitNewDiary} />
       <DiariesList diaries={diaries} />
     </>
