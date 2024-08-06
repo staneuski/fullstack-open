@@ -29,12 +29,12 @@ interface Props {
 }
 
 const DiaryForm = ({ onSubmit }: Props) => {
-  const [date, resetDate] = useField("text", "date");
+  const [date, resetDate] = useField("date", "date");
   const [visibility, setVisibility] = useState(Visibility.Ok);
   const [weather, setWeather] = useState(Weather.Cloudy);
   const [comment, resetComment] = useField("text", "comment");
 
-  const onVisibilityChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
+  const onVisibilityChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     event.preventDefault();
     if (typeof event.target.value === "string") {
       const value = event.target.value;
@@ -47,7 +47,7 @@ const DiaryForm = ({ onSubmit }: Props) => {
     }
   };
 
-  const onWeatherChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
+  const onWeatherChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     event.preventDefault();
     if (typeof event.target.value === "string") {
       const value = event.target.value;
@@ -83,23 +83,41 @@ const DiaryForm = ({ onSubmit }: Props) => {
         </div>
         <div>
           visibility
-          <select value={visibility} onChange={onVisibilityChange}>
-            {visibilityOptions.map((v) => (
-              <option key={v.value} value={v.value}>
-                {v.label}
-              </option>
-            ))}
-          </select>
+          {visibilityOptions.map((v) => (
+            <div
+              key={v.value}
+              style={{ display: "inline-block", marginRight: "10px" }}
+            >
+              <input
+                type="radio"
+                id={v.value}
+                name="visibility"
+                value={v.value}
+                checked={visibility === v.value}
+                onChange={onVisibilityChange}
+              />
+              <label htmlFor={v.value}>{v.label}</label>
+            </div>
+          ))}
         </div>
         <div>
           weather
-          <select value={weather} onChange={onWeatherChange}>
-            {weatherOptions.map((v) => (
-              <option key={v.value} value={v.value}>
-                {v.label}
-              </option>
-            ))}
-          </select>
+          {weatherOptions.map((v) => (
+            <div
+              key={v.value}
+              style={{ display: "inline-block", marginRight: "10px" }}
+            >
+              <input
+                type="radio"
+                id={v.value}
+                name="weather"
+                value={v.value}
+                checked={weather === v.value}
+                onChange={onWeatherChange}
+              />
+              <label htmlFor={v.value}>{v.label}</label>
+            </div>
+          ))}
         </div>
         <div>
           comment
