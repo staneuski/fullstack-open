@@ -9,6 +9,8 @@ import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 
+import PatientEntries from "./PatientEntries";
+
 const GenderIcon = (gender: Gender) => {
   switch (gender) {
     case Gender.Male:
@@ -49,14 +51,13 @@ const PatientPage = () => {
         {GenderIcon(patient.gender)}
       </Typography>
       <Typography variant="body1">Occupation: {patient.occupation}</Typography>
+      <Typography variant="body1">SSN: {patient.ssn}</Typography>
       {patient.dateOfBirth && (
         <Typography variant="body1">
           Birth date: {patient.dateOfBirth}
         </Typography>
       )}
-      {patient.ssn && (
-        <Typography variant="body1">SSN: {patient.ssn}</Typography>
-      )}
+      <PatientEntries entries={patient.entries} />
     </Box>
   );
 };
