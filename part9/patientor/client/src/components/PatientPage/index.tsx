@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import patientService from "../../services/patients";
+import { Box, Typography } from "@mui/material";
+import FemaleIcon from "@mui/icons-material/Female";
+import MaleIcon from "@mui/icons-material/Male";
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+
 import { Patient, Gender } from "../../types";
 
-import { Box, Typography } from "@mui/material";
-import MaleIcon from "@mui/icons-material/Male";
-import FemaleIcon from "@mui/icons-material/Female";
-import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+import { assertNever } from "../../utils/helpers";
+import patientService from "../../services/patients";
 
 import PatientEntries from "./PatientEntries";
 
@@ -17,8 +19,11 @@ const GenderIcon = (gender: Gender) => {
       return <MaleIcon />;
     case Gender.Female:
       return <FemaleIcon />;
-    default:
+    case Gender.Other:
       return <QuestionMarkIcon />;
+    default:
+      assertNever(gender);
+      break;
   }
 };
 
