@@ -1,7 +1,11 @@
 import { useState, SyntheticEvent } from "react";
+import dayjs from "dayjs";
 import { Button, Grid, TextField } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-import { Diagnosis, NewEntry } from "../../types";
+import { NewEntry } from "../../types";
 
 interface Props {
   onCancel: () => void;
@@ -11,29 +15,30 @@ interface Props {
 const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   const [description, setDescription] = useState("");
   const [specialist, setSpecialist] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState<string | null>(null);
   const [healthCheckRating, setHealthCheckRating] = useState<number>(0);
   const [diagnosisCodes, setDiagnosisCodes] = useState<string>("");
 
   const addEntry = (event: SyntheticEvent) => {
     event.preventDefault();
+    if (date) {
+      const entry: NewEntry = {
+        description,
+        specialist,
+        date,
+        type: "HealthCheck",
+        healthCheckRating,
+      };
 
-    const entry: NewEntry = {
-      description,
-      specialist,
-      date,
-      type: "HealthCheck",
-      healthCheckRating,
-    };
-
-    onSubmit(
-      diagnosisCodes
-        ? {
-            ...entry,
-            diagnosisCodes: diagnosisCodes.split(/\s*,\s*/),
-          }
-        : entry
-    );
+      onSubmit(
+        diagnosisCodes
+          ? {
+              ...entry,
+              diagnosisCodes: diagnosisCodes.split(/\s*,\s*/),
+            }
+          : entry
+      );
+    }
   };
 
   return (
@@ -43,26 +48,34 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
           label="Description"
           fullWidth
           value={description}
-          onChange={({ target }) => setDescription(target.value)}
+          onChange={({ target }: React.ChangeEvent<HTMLInputElement>) =>
+            setDescription(target.value)
+          }
         />
-        <TextField
-          label="Date"
-          placeholder="YYYY-MM-DD"
-          fullWidth
-          value={date}
-          onChange={({ target }) => setDate(target.value)}
-        />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Date"
+            value={dayjs(date)}
+            onChange={(newDate) =>
+              setDate(newDate?.format("YYYY-MM-DD") || null)
+            }
+          />
+        </LocalizationProvider>
         <TextField
           label="Specialist"
           fullWidth
           value={specialist}
-          onChange={({ target }) => setSpecialist(target.value)}
+          onChange={({ target }: React.ChangeEvent<HTMLInputElement>) =>
+            setSpecialist(target.value)
+          }
         />
         <TextField
           label="Diagnosis Codes"
           fullWidth
           value={diagnosisCodes}
-          onChange={({ target }) => setDiagnosisCodes(target.value)}
+          onChange={({ target }: React.ChangeEvent<HTMLInputElement>) =>
+            setDiagnosisCodes(target.value)
+          }
         />
         <TextField
           id="standard-number"
@@ -72,7 +85,9 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
             shrink: true,
           }}
           variant="standard"
-          onChange={({ target }) => setHealthCheckRating(Number(target.value))}
+          onChange={({ target }: React.ChangeEvent<HTMLInputElement>) =>
+            setHealthCheckRating(Number(target.value))
+          }
         />
         <Grid>
           <Grid item>
