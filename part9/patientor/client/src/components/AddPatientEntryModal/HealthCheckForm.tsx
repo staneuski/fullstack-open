@@ -12,7 +12,7 @@ interface Props {
   onSubmit: (values: NewEntry) => void;
 }
 
-const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
+const HealthCheckForm = ({ onCancel, onSubmit }: Props) => {
   const [description, setDescription] = useState("");
   const [specialist, setSpecialist] = useState("");
   const [date, setDate] = useState<string | null>(null);
@@ -42,7 +42,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   };
 
   return (
-    <div>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={addEntry}>
         <TextField
           label="Description"
@@ -52,15 +52,11 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
             setDescription(target.value)
           }
         />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            label="Date"
-            value={dayjs(date)}
-            onChange={(newDate) =>
-              setDate(newDate?.format("YYYY-MM-DD") || null)
-            }
-          />
-        </LocalizationProvider>
+        <DatePicker
+          label="Date"
+          value={dayjs(date)}
+          onChange={(newDate) => setDate(newDate?.format("YYYY-MM-DD") || null)}
+        />
         <TextField
           label="Specialist"
           fullWidth
@@ -114,8 +110,8 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
           </Grid>
         </Grid>
       </form>
-    </div>
+    </LocalizationProvider>
   );
 };
 
-export default AddEntryForm;
+export default HealthCheckForm;

@@ -111,7 +111,7 @@ const PatientPage = () => {
         onClose={closeModal}
       />
       <Button variant="contained" onClick={() => openModal()}>
-        Add New Patient
+        Add New Entry
       </Button>
     </Box>
   );
