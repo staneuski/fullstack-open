@@ -67,17 +67,15 @@ const PatientEntries = ({ entries }: { entries: Entry[] }) => {
   const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
 
   useEffect(() => {
-    const fetchDiagnoses = async (codes: string[]) => {
-      if (codes.length !== 0) {
-        try {
-          const diagnoses = await diagnosisService.getAll();
-          setDiagnoses(diagnoses.filter((d) => codes.includes(d.code)));
-        } catch (e) {
-          console.error(e);
-        }
+    const fetchDiagnoses = async () => {
+      try {
+        const diagnoses = await diagnosisService.getAll();
+        setDiagnoses(diagnoses);
+      } catch (e) {
+        console.error(e);
       }
     };
-    void fetchDiagnoses(entries.flatMap((e) => e.diagnosisCodes || []));
+    void fetchDiagnoses();
   }, [entries]);
 
   return (
@@ -93,11 +91,13 @@ const PatientEntries = ({ entries }: { entries: Entry[] }) => {
           </Typography>
           <Typography variant="body1">{e.description}</Typography>
           <ul>
-            {diagnoses.map((d) => (
-              <li key={d.code}>
-                <b>{d.code}</b>: {d.name}
-              </li>
-            ))}
+            {diagnoses
+              .filter((d) => e.diagnosisCodes?.includes(d.code))
+              .map((d) => (
+                <li key={d.code}>
+                  <b>{d.code}</b>: {d.name}
+                </li>
+              ))}
           </ul>
           <PatientEntry entry={e} />
           <Typography variant="body2">diagnose by {e.specialist}</Typography>
